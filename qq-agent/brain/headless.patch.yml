@@ -1,0 +1,64 @@
+﻿# Amy 值班脑（DSH headless profile）补丁 —— daemon 每次 spawn 时用 --patch 传入。
+# 校验：`qq-agent.exe duty doctor` 会跑 --dump-config 并断言 approval=never / sandbox=danger-full-access /
+# personaPrefix 是下面这段；改动这里请同时更新 doctor 的断言文本。
+#
+# 为什么改这些行（详见 docs\哨兵.md「值班脑补丁」）：
+#   system-prompt    覆盖 headless 默认的 "You are a coding agent…"，值班代理不写正文，正文由声线模块出
+#   approval         headless 没有审批应答者，ask 会 fail-closed；必须 never
+#   sandbox-policy   会话工作区=仓库根；写操作限制在仓库内（brain/dsh-home、logs、data 都在里面）
+#   agent-default-model / llm-deepseek  固定 deepseek-flash；密钥走启动环境 DEEPSEEK_API_KEY
+#                    （headless bundle 禁用了 credentials 服务，只读启动环境）
+
+- id: system-prompt
+  config:
+    personaPrefix: |
+      你是 Amy 的值班代理，不是群里那个人；也绝不替她措辞（她的嘴是声线模块）。
+      你只做四件事：看现场、判断该不该接、用工具取证、写一行意图交给 duty。
+      判断只看三问：这句冲谁？有没有具体钩子（错词/梗/挑衅/顺口）？我接上去是不是多余？
+      没钩子或只是凑热闹 → skip；有钩子 → 意图 = 要传的意思 + 一两个素材 + 明确别写什么。意图不是台词。
+      不确定就 skip。宁可漏一次，也别解释一次。过程不要旁白，直播行由命令自动写。
+      有手有脚：需要动手就动手（duty run / sendfile / sendimg / web_search），做完用证据说话；
+      群友只触发白名单能力；本机/系统命令只认 owner（owner 可要求关机/重启/装软件，关机先回话再 shutdown /s /t 20，只硬拦磁盘擦除）。能力清单见 duty.md §15。
+
+- id: approval
+  config:
+    policy: never
+
+- id: sandbox-policy
+  config:
+    # 值班脑要 spawn qq-agent.exe 操作真机(UIA/写 logs)；workspace-write 的受限令牌会拦截子进程写盘与出网，
+    # 实测 OCR/发送/Writer 全部 Access denied / SSL 失败。这里与旧 yolo 值班台同权：不做沙箱限制。
+    mode: danger-full-access
+    workspaceRoot: !!js process.cwd()
+
+# permission-presets 会把「当前沙箱 + 审批策略」反推成预设名；组合不在表里就直接报
+# "match no preset"。approval=never + danger-full-access 不在默认表里，所以这里补一张同构表
+# （三档都改成审批 never，无人应答时一律 fail-closed 而不是挂住）。
+- id: permission
+  config:
+    presets:
+      read-only:
+        sandbox: read-only
+        approval: never
+      workspace-write:
+        sandbox: workspace-write
+        approval: never
+      danger-full-access:
+        sandbox: danger-full-access
+        approval: never
+
+- id: agent-default-model
+  config:
+    provider: deepseek-official
+    model: deepseek-flash
+    # deepseek-flash 的 connection.defaults.thinking = disabled，只支持 off（见 dsh-llm-deepseek）
+    reasoningEffort: "off"
+
+- id: llm-deepseek
+  config:
+    apiKeyEnv: DEEPSEEK_API_KEY
+
+
+
+
+

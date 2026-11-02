@@ -1,0 +1,41 @@
+# ===== 密钥与私有配置（永不入库）=====
+qq-agent/config.json
+yuno/.env
+*.env.local
+
+# ===== 本地上游组件 / 模型（各自单独安装或克隆，见 README）=====
+yuno/
+qq-agent/brain/node_modules/
+qq-agent/brain/dsh-home/
+bot-workspace/chattts-restore/
+bot-workspace/chattts-zluda/
+bot-workspace/.venv*/
+SD-UI-Kit/
+STATE-ToxiCN-main/
+Sound/
+
+# ===== 数据库（本仓库不带任何库文件；都是运行时/本地生成的）=====
+*.db
+*.db.bak*
+*.sqlite
+*.sqlite3
+qq-agent/data/meme-index.db
+
+# ===== 构建产物 =====
+**/bin/
+**/obj/
+
+# ===== 运行时日志与状态 =====
+qq-agent/logs/
+*.log
+*.pid
+*.jsonl.tmp
+qq-agent/tests/out/
+
+# ===== Python / Node =====
+__pycache__/
+*.pyc
+.venv/
+
+# ===== 备份文件 =====
+*.bak-*

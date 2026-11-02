@@ -1,0 +1,125 @@
+{
+    "SelfName":  "Amy",
+    "PersonaPath":  "..\\persona.md",
+    "Yuno":  {
+                 "BaseUrl":  "http://127.0.0.1:8457",
+                 "Token":  ""
+             },
+    "Model":  {
+                  "BaseUrl":  "https://api.deepseek.com",
+                  "ApiKey":  "",
+                  "Model":  "deepseek-flash",
+                  "Temperature":  0.8,
+                  "MaxTokens":  400
+              },
+    "Writer":  {
+                   "Enabled":  true,
+                   "Required":  true,
+                   "PersonaPath":  "..\\persona.md",
+                   "Temperature":  0.95,
+                   "MaxTokens":  800,
+                   "MaxLineChars":  40,
+                   "MaxChars":  120,
+                   "MaxBubbles":  1,
+                   "BubbleDelayMinMs":  350,
+                   "BubbleDelayMaxMs":  900,
+                   "BanRepeat":  true,
+                   "BanAIisms":  true,
+                   "RetryOnViolation":  1
+               },
+    "Scene":  {
+                  "NowLines":  8,
+                  "AmbientLines":  24,
+                  "MaxBytes":  12000,
+                  "MemoryGate":  "cue",
+                  "MemoryTopK":  3,
+                  "MemoryBudget":  700,
+                  "OcrInline":  true
+              },
+    "Memes":  {
+                  "Path":  "data\\memes.json",
+                  "CooldownHours":  12,
+                  "CandidateTop":  5,
+                  "MinCount":  3,
+                  "MinSenders":  2,
+                  "ScanLines":  200
+              },
+    "Triage":  {
+                   "Mode":  "off"
+               },
+    "Action":  {
+                   "Enabled":  true,
+                   "OwnerUids":  [],
+                   "MaxSeconds":  120,
+                   "SendDirs":  [
+                                    "Sound",
+                                    "qq-agent\\logs\\img",
+                                    "bot-workspace\\archive"
+                                ],
+                   "GroupAllowedCommands":  [],
+                   "DenyPatterns":  [
+                                        "format c:",
+                                        "format d:",
+                                        "format /fs",
+                                        "shutdown /",
+                                        "shutdown.exe",
+                                        "stop-computer",
+                                        "restart-computer",
+                                        "diskpart",
+                                        "bcdedit",
+                                        "vssadmin delete",
+                                        "reg delete hklm",
+                                        "cipher /w",
+                                        "remove-item -recurse c:\\",
+                                        "rm -rf /"
+                                    ],
+                   "OwnerHardDenyPatterns":  [
+                                                 "format c:",
+                                                 "format d:",
+                                                 "format /fs",
+                                                 "diskpart clean",
+                                                 "cipher /w",
+                                                 "remove-item -recurse c:\\windows",
+                                                 "vssadmin delete shadows"
+                                             ]
+               },
+    "Daemon":  {
+                   "Chat":  "示例群",
+                   "DebounceMs":  600,
+                   "ContextMessages":  24,
+                   "ReplyEnabled":  true,
+                   "DumpPrompt":  false,
+                   "NotifyOnly":  true
+               },
+    "AmyRuntime":  {
+                       "Mode":  "dsh",
+                       "Enabled":  false,
+                       "DryRun":  false,
+                       "ProjectRoot":  "..",
+                       "TimeoutMinutes":  3,
+                       "MaxContextMessages":  24,
+                       "Dsh":  {
+                                   "NodePath":  "node",
+                                   "CliRoot":  "brain\\node_modules",
+                                   "Home":  "brain\\dsh-home",
+                                   "Patch":  "brain\\headless.patch.yml",
+                                   "Profile":  "headless",
+                                   "SessionMode":  "fresh",
+                                   "Env":  {
+                                               "DSH_TELEMETRY_DISABLED":  "1"
+                                           }
+                               },
+                       "FastLane":  false,
+                       "FastDraw":  false,
+                       "FastCover":  false,
+                       "FastVoice":  false,
+                       "FastDark":  false,
+                       "DarkPersonaPath":  "..\\persona-dark.md"
+                   },
+    "Vision":  {
+                   "Enabled":  false,
+                   "BaseUrl":  "https://open.bigmodel.cn/api/paas/v4",
+                   "ApiKey":  "",
+                   "Model":  "glm-4.6v"
+               }
+}

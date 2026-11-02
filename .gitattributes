@@ -1,0 +1,9 @@
+* text=auto
+
+# 二进制：不要做行尾/编码转换
+*.db   binary
+*.exe  binary
+*.dll  binary
+*.png  binary
+*.jpg  binary
+*.wav  binary
